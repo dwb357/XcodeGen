@@ -498,6 +498,9 @@ public class PBXProjGenerator {
                 }
 
             case .framework:
+                let buildPath = Path(dependency.reference).parent().string.quoted
+                frameworkBuildPaths.insert(buildPath)
+                
                 // Static libraries can't link or embed dynamic frameworks
                 guard target.type != .staticLibrary else { break }
 
@@ -530,9 +533,6 @@ public class PBXProjGenerator {
                     )
                     copyFrameworksReferences.append(embedFile)
                 }
-
-                let buildPath = Path(dependency.reference).parent().string.quoted
-                frameworkBuildPaths.insert(buildPath)
             case .sdk:
                 // Static libraries can't link or embed dynamic frameworks
                 guard target.type != .staticLibrary else { break }
